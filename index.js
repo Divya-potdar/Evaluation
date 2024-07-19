@@ -1,6 +1,6 @@
 const API = (() => {
     const URL = "http://localhost:3000";
-    const ITEMS_PER_PAGE = 4; // Adjust the number of items per page
+    const ITEMS_PER_PAGE = 2; // Set to 2 items per page
 
     const getCart = () => fetch(`${URL}/cart`).then(res => res.json());
 
@@ -35,7 +35,8 @@ const API = (() => {
         getInventory,
         addToCart,
         deleteFromCart,
-        checkout
+        checkout,
+        ITEMS_PER_PAGE
     };
 })();
 
@@ -77,7 +78,7 @@ const Model = (() => {
 
         set inventory(newInventory) {
             this.#inventory = newInventory.items;
-            this.#totalPages = Math.ceil(newInventory.total / ITEMS_PER_PAGE);
+            this.#totalPages = Math.ceil(newInventory.total / API.ITEMS_PER_PAGE);
             this.#onChange();
         }
 
@@ -117,7 +118,7 @@ const View = (() => {
     const checkoutBtnEl = document.querySelector(".checkout-btn");
     const prevBtnEl = document.querySelector(".prev-btn");
     const nextBtnEl = document.querySelector(".next-btn");
-    const pageNumbersEl = document.querySelector(".page-numbers");
+    const pageNumbersEl = document.querySelector(".pagination .page-info");
 
     const renderInventory = (inventory) => {
         inventoryListEl.innerHTML = "";
@@ -151,23 +152,7 @@ const View = (() => {
     const renderPagination = (currentPage, totalPages) => {
         prevBtnEl.disabled = currentPage === 1;
         nextBtnEl.disabled = currentPage === totalPages;
-
-        pageNumbersEl.innerHTML = "";
-        for (let i = 1; i <= totalPages; i++) {
-            const pageNumberEl = document.createElement("button");
-            pageNumberEl.classList.add("page-number");
-            if (i === currentPage) {
-                pageNumberEl.classList.add("active");
-            }
-            pageNumberEl.textContent = i;
-            pageNumberEl.addEventListener("click", () => {
-                state.currentPage = i;
-                model.getInventory(i).then(data => {
-                    state.inventory = data;
-                });
-            });
-            pageNumbersEl.appendChild(pageNumberEl);
-        }
+        pageNumbersEl.textContent = `Page ${currentPage} of ${totalPages}`;
     };
 
     return {
@@ -213,26 +198,25 @@ const Controller = ((model, view) => {
                 const id = event.target.dataset.id;
                 const quantityInput = document.querySelector(`.quantity-input[data-id='${id}']`);
                 let quantity = parseInt(quantityInput.value);
-
+    
                 if (quantity > 0) {
                     const inventoryItem = state.inventory.find(item => item.id == id);
                     const cartItem = state.cart.find(item => item.id == id);
-
+    
                     if (cartItem) {
                         model.updateCart(id, cartItem.quantity + quantity)
-                            .then(() => model.getCart())
-                            .then(data => state.cart = data);
+                           .then(() => model.getCart())
+                           .then(data => state.cart = data);
                     } else {
-                        model.addToCart({ ...inventoryItem, quantity })
-                            .then(() => model.getCart())
-                            .then(data => state.cart = data);
+                        model.addToCart({...inventoryItem, quantity })
+                           .then(() => model.getCart())
+                           .then(data => state.cart = data);
                     }
-
-                    // Keep the input value as it is, so no reset here
                 }
             }
         });
     };
+      
 
     const handleDelete = () => {
         view.cartListEl.addEventListener("click", (event) => {
