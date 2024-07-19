@@ -1,0 +1,51 @@
+{
+  "cart": [
+    {
+      "id": 2,
+      "content": "peach",
+      "quantity": 2
+    }
+  ],
+  "inventory": [
+    {
+      "id": 1,
+      "content": "apple"
+    },
+    {
+      "id": 2,
+      "content": "peach"
+    },
+    {
+      "id": 3,
+      "content": "banana"
+    },
+    {
+      "id": 4,
+      "content": "grapes"
+    },
+    {
+      "id": 5,
+      "content": "orange"
+    },
+    {
+      "id": 6,
+      "content": "mango"
+    },
+    {
+      "id": 7,
+      "content": "pineapple"
+    },
+    {
+      "id": 8,
+      "content": "watermelon"
+    },
+    {
+      "id": 9,
+      "content": "kiwi"
+    },
+    {
+      "id": 10,
+      "content": "strawberry"
+    }
+  ]
+}
