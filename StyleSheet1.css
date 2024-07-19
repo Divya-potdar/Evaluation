@@ -1,4 +1,4 @@
-﻿body {
+body {
     font-family: Arial, sans-serif;
     background-color: #f7f7f7;
     display: flex;
@@ -68,12 +68,18 @@
     background-color: #0056b3;
 }
 
-.minus-btn, .plus-btn {
-    background-color: #dc3545;
+.minus-btn {
+    background-color: #c82333;
+}
+.plus-btn {
+    background-color: green;
 }
 
-.minus-btn:hover, .plus-btn:hover {
+.minus-btn:hover{
     background-color: #c82333;
+} 
+.plus-btn:hover {
+    background-color: green;
 }
 
 .quantity-input {
